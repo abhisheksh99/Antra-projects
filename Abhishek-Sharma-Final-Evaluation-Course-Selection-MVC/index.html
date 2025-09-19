@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Selection Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="main-container">
+        <h1>Class Selection Page</h1>
+        
+        <div class="buckets-container">
+            <div class="course-bucket">
+                <h2>Available Courses</h2>
+                <div class="course-list" id="available-courses"></div>
+            </div>
+            
+            <div class="course-bucket">
+                <h2>Selected Courses</h2>
+                <div class="course-list" id="selected-courses"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="total-credits">
+                <span>Total Credit : </span>
+                <span id="total-credits">0</span>
+            </div>
+            <button id="select-btn" class="select-button">Select</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/controller.js"></script>
+</body>
+</html>
