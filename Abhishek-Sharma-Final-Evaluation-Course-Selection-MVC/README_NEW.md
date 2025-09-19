@@ -1,4 +1,4 @@
-# Class Selection Page
+# Course Selection Page
 
 This is a simple web application that allows users to select courses for a semester. It fetches course data from a local API, displays available courses, and allows users to select them while keeping track of the total credits. The application is built using HTML, CSS, and vanilla JavaScript, following a Model-View-Controller (MVC) architectural pattern.
 
