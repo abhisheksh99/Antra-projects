@@ -1,59 +1,57 @@
 # Course Selection Page
 
-This is a simple web application that allows users to select courses for a semester. It fetches course data from a local API, displays available courses, and allows users to select them while keeping track of the total credits. The application is built using HTML, CSS, and vanilla JavaScript, following a Model-View-Controller (MVC) architectural pattern.
+This is a simple web application that allows users to select courses for a semester. It fetches course data from a local API (powered by json-server), displays available courses, and enables users to select courses while tracking total credits. The application is built using HTML, CSS, and vanilla JavaScript, following the Model-View-Controller (MVC) architectural pattern.
 
 ## Features
 
 - **View Available Courses**: Fetches and displays a list of available courses from a local API.
-- **Select/Deselect Courses**: Click on a course to select or deselect it.
-- **Credit Tracking**: Calculates and displays the total credits of the selected courses.
+- **Select/Deselect Courses**: Click a course to select or deselect it.
+- **Credit Tracking**: Calculates and displays the total credits of selected courses.
 - **Credit Limit**: Enforces a maximum of 18 credits per semester.
-- **Confirmation**: Asks for user confirmation before finalizing the course selection.
-- **Persistent State**: Once courses are submitted, the selection is locked.
+- **Confirmation**: Prompts user confirmation before finalizing course selection.
+- **Persistent State**: Locks the selection after submission.
 
 ## Getting Started
 
-To run this project locally, you'll need to have `json-server` installed. For more information on `json-server`, you can visit its [GitHub repository](https://github.com/Show3567/json-server). If you don't have it, you can install it globally via npm:
-
-```bash
-npm install -g json-server
-```
+Follow these steps to set up and run the project locally.
 
 ### Prerequisites
 
-- A modern web browser.
-- Node.js and npm (for running `json-server`).
+- A modern web browser (e.g., Chrome, Firefox).
+- Node.js and npm installed for running json-server.
 
 ### Installation & Setup
 
-1.  **Clone the repository:**
+1. **Clone the Repository**:
+   Clone the project repository to your local machine:
+   ```bash
+   git clone https://github.com/Show3567/json-server.git
+   cd json-server
+   ```
 
-    ```bash
-    git clone <repository-url>
-    cd <repository-directory>
-    ```
+2. **Install JSON Server**:
+   Install json-server globally using npm to serve the local API:
+   ```bash
+   npm install -g json-server
+   ```
 
-2.  **Start the JSON server:**
+3. **Start the JSON Server**:
+   From the project's root directory, start the json-server to serve the db.json file on port 3000:
+   ```bash
+   json-server --watch db.json --port 3000
+   ```
+   The API endpoint for fetching courses will be available at http://localhost:3000/courseList.
 
-    Navigate to the project's root directory and run the following command to start the local API server. This will serve the `db.json` file on port 3000.
-
-    ```bash
-    json-server --watch db.json --port 3000
-    ```
-
-    The API endpoint for fetching the course list will be `http://localhost:3000/courseList`.
-
-3.  **Open the application:**
-
-    Open the `index.html` file in your web browser.
+4. **Open the Application**:
+   Open the `index.html` file in a web browser (e.g., by double-clicking it or using a local server like Live Server in VS Code).
 
 ## Usage
 
-1.  The page will load and display a list of available courses.
-2.  Click on any course to select it. The selected course will be highlighted, and the total credits will be updated.
-3.  Click on a selected course again to deselect it.
-4.  Once you are satisfied with your selection, click the "Select" button.
-5.  A confirmation dialog will appear. If you confirm, your selected courses will be moved to the "Selected Courses" bucket, and you will no longer be able to make changes.
+- The page loads and displays a list of available courses fetched from the API.
+- Click a course to select it. Selected courses are highlighted, and the total credits are updated.
+- Click a selected course to deselect it.
+- Once satisfied with your selection, click the "Select" button.
+- A confirmation dialog will appear. Confirming moves the selected courses to the "Selected Courses" bucket and locks further changes.
 
 ## Project Structure
 
@@ -65,48 +63,50 @@ npm install -g json-server
 │   ├── controller.js
 │   ├── model.js
 │   └── view.js
-├── db.json
 ├── index.html
 └── README.md
 ```
 
--   `index.html`: The main HTML file for the application.
--   `css/styles.css`: Contains the styling for the application.
--   `js/`: This directory holds the JavaScript files, structured according to the MVC pattern.
-    -   `model.js`: Handles data and API interactions.
-    -   `view.js`: Manages the UI and DOM manipulation.
-    -   `controller.js`: Acts as the intermediary, connecting the model and the view.
--   `db.json`: The local database file used by `json-server` to provide the course data.
+- `index.html`: The main HTML file for the application.
+- `css/styles.css`: Styles for the application.
+- `js/`: JavaScript files organized in the MVC pattern:
+  - `model.js`: Manages data and API interactions.
+  - `view.js`: Handles UI rendering and DOM manipulation.
+  - `controller.js`: Connects the model and view, managing application logic.
 
 ## Code Flow (MVC Architecture)
 
-The application's logic is separated into three main components:
+The application follows the Model-View-Controller (MVC) pattern for clear separation of concerns:
 
 ### 1. Model (`model.js`)
-
--   **Purpose**: To manage the application's data. In this project, its sole responsibility is to fetch the list of courses from the API.
--   **Key Function**: `getCourses()`: This function sends a `fetch` request to `http://localhost:3000/courseList` and returns the course data as a JSON object.
+- **Purpose**: Manages data interactions.
+- **Key Function**:
+  - `getCourses()`: Fetches course data from `http://localhost:3000/courseList` using the Fetch API and returns it as a JSON object.
 
 ### 2. View (`view.js`)
-
--   **Purpose**: To handle the presentation layer. It is responsible for everything the user sees in the browser.
--   **Key Functions**:
-    -   `renderCourses()`: Creates and displays the list of courses in the UI.
-    -   `updateCreditCounter()`: Updates the total credits displayed on the page.
-    -   `selectCourse()`/`deselectCourse()`: Adds or removes a 'selected' class to a course element for visual feedback.
-    -   `moveCoursesToSelected()`: Moves the selected courses to the "Selected Courses" bucket after submission.
-    -   It also handles showing alerts and confirmation dialogs.
+- **Purpose**: Handles the presentation layer and user interface.
+- **Key Functions**:
+  - `renderCourses()`: Displays the list of courses in the UI.
+  - `updateCreditCounter()`: Updates the displayed total credits.
+  - `selectCourse()`/`deselectCourse()`: Adds or removes the 'selected' class for visual feedback.
+  - `moveCoursesToSelected()`: Moves selected courses to the "Selected Courses" bucket after submission.
+  - Displays alerts and confirmation dialogs.
 
 ### 3. Controller (`controller.js`)
+- **Purpose**: Connects the Model and View, handling core application logic.
+- **Workflow**:
+  1. **Initialization** (`init()`): Entry point of the application.
+  2. **Load Courses**: Calls `model.getCourses()` to fetch course data.
+  3. **Render UI**: Passes fetched data to `view.renderCourses()` to display courses.
+- **Event Handling**:
+  - `handleCourseSelect()`: Manages course selection, checks credit limits, and updates the view.
+  - `handleCourseDeselect()`: Manages course deselection.
+  - `handleSelectButton()`: Handles the "Select" button click, confirms with the user, and finalizes the selection.
 
--   **Purpose**: To connect the Model and the View. It contains the core application logic.
--   **Workflow**:
-    1.  **Initialization (`init()`):** The `init` function is the entry point of the application.
-    2.  **Load Courses:** It calls `model.getCourses()` to fetch the data.
-    3.  **Render UI:** Once the data is retrieved, it calls `view.renderCourses()` to display the courses.
-    4.  **Event Handling:** The controller sets up event listeners for user actions:
-        -   `handleCourseSelect()`: Triggered when a user clicks to select a course. It checks the credit limit and updates the view.
-        -   `handleCourseDeselect()`: Triggered when a user clicks to deselect a course.
-        -   `handleSelectButton()`: Triggered when the "Select" button is clicked. It confirms the selection with the user and then finalizes the process.
+This MVC structure ensures the code is modular, maintainable, and scalable.
 
-This separation of concerns makes the code more organized, easier to maintain, and scalable.
+## Additional Notes
+
+- For more information on json-server, visit its [GitHub repository](https://github.com/typicode/json-server).
+- Ensure the JSON Server is running on port 3000 while using the application, as the course data is fetched from `http://localhost:3000/courseList`.
+
