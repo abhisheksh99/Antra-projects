@@ -1,64 +1,63 @@
+import { sortOptions } from "./model";
+
 export const renderCourses = (courses, onCourseSelect, onCourseDeselect) => {
   const availableContainer = document.getElementById('available-courses');
   const selectedContainer = document.getElementById('selected-courses');
-  
 
   availableContainer.innerHTML = '';
   selectedContainer.innerHTML = '';
-  
+
   courses.forEach(course => {
     const courseElement = createCourseElement(course, onCourseSelect, onCourseDeselect);
-    
-    // Always add to available container - selection is visual only
     availableContainer.appendChild(courseElement);
   });
-  
-  // Update visual selection state after rendering
-  updateCourseSelection();
 };
+
 
 const createCourseElement = (course, onCourseSelect, onCourseDeselect) => {
   const courseDiv = document.createElement('div');
   courseDiv.className = 'course-item';
   courseDiv.dataset.courseId = course.courseId;
-  
+
   const courseType = course.required ? 'Compulsory Course' : 'Elective Course';
-  
+
   courseDiv.innerHTML = `
     <div class="course-name">${course.courseName}</div>
     <div class="course-type">Course Type : ${courseType}</div>
     <div class="course-credit">Course Credit : ${course.credit}</div>
   `;
-  
+
   courseDiv.addEventListener('click', () => {
-    console.log('Course clicked:', course.courseName, 'Selected:', selectedCourses.has(course.courseId));
-    if (selectedCourses.has(course.courseId)) {
-      onCourseDeselect(course);
-    } else {
-      onCourseSelect(course);
+    console.log('Course clicked:', course.courseName);
+    if (onCourseSelect && onCourseDeselect) {
+      const isSelected = courseDiv.classList.contains('selected');
+      if (isSelected) {
+        onCourseDeselect(course);
+      } else {
+        onCourseSelect(course);
+      }
     }
   });
-  
+
   return courseDiv;
 };
+
+export const renderSort = (sortOptions) ->{
+  const checkbox = document.getElementById("sort-toggle")
+  const button = document.getElementById("sort-button")
+
+  
+
+}
 
 export const updateCreditCounter = (totalCredits) => {
   const creditElement = document.getElementById('total-credits');
   creditElement.textContent = totalCredits;
 };
 
-export const selectCourse = (courseId) => {
-  selectedCourses.add(courseId);
-  updateCourseSelection();
-};
 
-export const deselectCourse = (courseId) => {
-  selectedCourses.delete(courseId);
-  updateCourseSelection();
-};
 
-const updateCourseSelection = () => {
-
+export const updateCourseSelection = (selectedCourses) => {
   document.querySelectorAll('.course-item').forEach(item => {
     const courseId = parseInt(item.dataset.courseId);
     if (selectedCourses.has(courseId)) {
@@ -69,31 +68,25 @@ const updateCourseSelection = () => {
   });
 };
 
-export const moveCoursesToSelected = (courses) => {
+export const moveCoursesToSelected = (selectedCoursesList, availableCoursesList) => {
   const availableContainer = document.getElementById('available-courses');
   const selectedContainer = document.getElementById('selected-courses');
-  
 
   availableContainer.innerHTML = '';
   selectedContainer.innerHTML = '';
-  
 
-  courses.forEach(course => {
-    if (selectedCourses.has(course.courseId)) {
-      const courseElement = createCourseElement(course, () => {}, () => {});
-     
-      selectedContainer.appendChild(courseElement);
-    } else {
-      const courseElement = createCourseElement(course, () => {}, () => {});
-      availableContainer.appendChild(courseElement);
-    }
+  selectedCoursesList.forEach(course => {
+    const courseElement = createCourseElement(course, null, null); 
+    selectedContainer.appendChild(courseElement);
   });
-  
-  coursesSubmitted = true;
-  updateSelectButton();
+
+  availableCoursesList.forEach(course => {
+    const courseElement = createCourseElement(course, null, null); 
+    availableContainer.appendChild(courseElement);
+  });
 };
 
-export const updateSelectButton = () => {
+export const updateSelectButton = (coursesSubmitted) => {
   const selectBtn = document.getElementById('select-btn');
   if (coursesSubmitted) {
     selectBtn.disabled = true;
@@ -104,6 +97,10 @@ export const updateSelectButton = () => {
   }
 };
 
+
+
+
+
 export const showCreditLimitAlert = () => {
   alert('You can only choose up to 18 credits in one semester');
 };
@@ -113,20 +110,6 @@ export const showConfirmationDialog = (totalCredits) => {
   return confirm(message);
 };
 
-export const getSelectedCourses = () => {
-  return Array.from(selectedCourses);
+export const showError = (message) => {
+  alert(message);
 };
-
-export const isCourseSelected = (courseId) => {
-  return selectedCourses.has(courseId);
-};
-
-export const getTotalSelectedCredits = (courses) => {
-  return courses
-    .filter(course => selectedCourses.has(course.courseId))
-    .reduce((total, course) => total + course.credit, 0);
-};
-
-
-export let selectedCourses = new Set();
-export let coursesSubmitted = false;

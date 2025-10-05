@@ -1,0 +1,26 @@
+<h1>Task List</h1>
+
+<ul *ngIf="tasks.length > 0; else noTasks">
+  <li *ngFor="let item of tasks" appHighlight>
+    <strong>{{ item.title }}</strong>
+    <div>{{ item.description }}</div>
+  </li>
+</ul>
+
+<ng-template #noTasks>
+  <p>No tasks available.</p>
+</ng-template>
+
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" novalidate>
+  <input formControlName="title" placeholder="Enter new task title" />
+  <div *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid" class="error">
+    * Title is required
+  </div>
+
+  <input formControlName="description" placeholder="Enter new task description" />
+  <div *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid" class="error">
+    * Description is required
+  </div>
+
+  <button type="submit">Add new Task</button>
+</form>

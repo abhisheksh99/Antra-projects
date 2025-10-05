@@ -12,3 +12,11 @@ export const getCourses = async () => {
     throw error; 
   }
 };
+
+export const currentSortIndex =0;
+export const sortOptions=[
+  {value:"name",label:"Sort based on name",
+    value:"credit", label:"Sort based on credit",
+    value:"course_type", label:"Sort based on type"
+  }
+]
