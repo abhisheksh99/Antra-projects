@@ -1,0 +1,19 @@
+<p>{{detail?.title}}</p>
+
+<div *ngIf = "clicked">
+    <div>
+        <input [(ngModel)]="id">
+        <input [(ngModel)]="title">
+        <input [(ngModel)]="description">
+        <input [(ngModel)]="dueDate">
+        <input [(ngModel)]="status">
+        <input [(ngModel)]="priority">
+        <button (click) ="save()">Save Task</button>
+        <button (click)="cancel()">Cancel</button>
+    </div>
+    <div>
+
+    </div>
+
+</div>
+<button (click) = "edit()"> Edit </button>

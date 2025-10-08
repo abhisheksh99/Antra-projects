@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'antrashare'`, () => {
+  it(`should have as title 'TaskManager'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('antrashare');
+    expect(app.title).toEqual('TaskManager');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, antrashare');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, TaskManager');
   });
 });
