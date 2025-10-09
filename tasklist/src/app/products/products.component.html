@@ -1,0 +1,18 @@
+<h2>Products</h2>
+
+
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+<ul>
+  <li *ngFor="let product of products">
+    <strong>{{ product.title }}</strong> <br>
+    {{ product.description }} <br>
+    <em>Category:</em> {{ product.category }}
+    <button (click)="deleteProduct(product.id)">Delete</button>
+  </li>
+</ul>
+
+
+<button (click)="addProduct()">Add Product</button>

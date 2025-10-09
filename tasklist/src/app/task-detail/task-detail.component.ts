@@ -5,7 +5,7 @@ import {
   Output,
 } from '@angular/core';
 import { Task } from '../task.interface';
-import { FormControl, FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-task-detail',
