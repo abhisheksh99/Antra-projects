@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductServiceService {
+export class ProductService {
+  private apiURL = 'https://dummyjson.com/products';
+  private searchApiURL = "https://dummyjson.com/products/search?q=";
+  products = new BehaviorSubject<any[]>([]);
 
-  private apiUrl = 'https://dummyjson.com/products';
+  constructor(private http:HttpClient) { }
 
-  constructor(private http: HttpClient) {}
-
-
-  getProducts(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getProducts() {
+    return this.http.get(this.apiURL).pipe(
+      tap((data:any) => this.products.next(
+        data.products
+      ))
+    );
   }
 
-
-  addProduct(product: any): Observable<any> {
-    return this.http.post(this.apiUrl + '/add', product);
+  getSearchedProducts(keyword:string) {
+    return this.http.get(this.searchApiURL+keyword).pipe(
+      tap((data:any) => this.products.next(
+        data.products
+      )
+    ));
   }
 
-
-  updateProduct(id: number, product: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, product);
-  }
-
-
-  deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
 }

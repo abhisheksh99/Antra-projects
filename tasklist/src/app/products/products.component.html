@@ -1,18 +1,37 @@
-<h2>Products</h2>
+<h1>Products</h1>
+<label>Search: </label>
+<input [formControl]="userSearchInput"/>
+<p *ngIf="errorMessage">{{errorMessage}}</p>
+<div class = "mainContainer" *ngIf="!errorMessage">
+    <div class = "productContainer" *ngFor="let product of productsList; let i = index">
+        <h3>{{product.title}}</h3>
+        <p>{{product.description}}</p>
+        <p>category: {{product.category}}</p>
+        <button (click)="onDelete(i)">Delete</button>
+        <button (click)="onUpdate(i)">Update</button><br>
+        <ng-container *ngIf="editingIndex == i">
+            <label>Title</label><br>
+            <input [(ngModel)]="newTitle"/><br>
+            <label>Description</label><br>
+            <input [(ngModel)]="newDescription"/><br>
+            <label>Category</label><br>
+            <input [(ngModel)]="newCategory"/><br>
+            <button (click)="updateProduct(i)">Submit</button>
+            <button (click)="closeEditing()">Close</button>
+        </ng-container>
 
-
-<div *ngIf="errorMessage" class="error">
-  {{ errorMessage }}
+    </div>
 </div>
-
-<ul>
-  <li *ngFor="let product of products">
-    <strong>{{ product.title }}</strong> <br>
-    {{ product.description }} <br>
-    <em>Category:</em> {{ product.category }}
-    <button (click)="deleteProduct(product.id)">Delete</button>
-  </li>
-</ul>
-
-
-<button (click)="addProduct()">Add Product</button>
+<button class = 'add-btn' (click)="addProduct()">Add Product</button>
+<div *ngIf="addingProduct">
+    <div class ="form">
+        <label>Title</label><br>
+        <input [(ngModel)]="newTitle"/><br>
+        <label>Description</label><br>
+        <input [(ngModel)]="newDescription"/><br>
+        <label>Category</label><br>
+        <input [(ngModel)]="newCategory"/><br>
+        <button (click)="onSubmitAddProduct()">Submit</button>
+        <button (click)="onCancelAddProduct()">Cancel</button>
+    </div>
+</div>

@@ -8,10 +8,10 @@ import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomPipe } from './custom.pipe';
-import { ProductComponent } from './products/products.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TitleComponent } from './title/title.component';
 import { SectionComponent } from './section/section.component';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,10 @@ import { SectionComponent } from './section/section.component';
     TaskDetailComponent,
     TaskListComponent,
     CustomPipe,
-    ProductComponent,
+    ProductsComponent,
+
+
+
     TitleComponent,
     SectionComponent
   ],
@@ -29,7 +32,9 @@ import { SectionComponent } from './section/section.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
