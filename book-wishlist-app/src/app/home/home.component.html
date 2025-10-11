@@ -1,0 +1,33 @@
+<div class="main-container">
+    <div class="left">
+        <label>Search</label> <br>
+        <input [formControl]="userSearchInput" />
+        <div class="books-container">
+            <div class="book-card" *ngFor="let b of booksList; let i = index" (click)="onSelectCard(b)">
+                <div class="card-content">
+                    <!-- Left side: image + title stacked -->
+                    <div class="card-left">
+                        <img *ngIf="b.volumeInfo.imageLinks" [src]="b.volumeInfo.imageLinks.thumbnail"
+                            alt="{{ b.volumeInfo.title }}">
+                        <h3>{{b.volumeInfo.title}}</h3>
+                    </div>
+
+                    <!-- Right side: details -->
+                    <div class="book-details">
+                        <p *ngIf="b.volumeInfo.publisher">Publisher: {{b.volumeInfo.publisher}}</p>
+                        <p *ngIf="b.volumeInfo.publishedDate">Published: {{b.volumeInfo.publishedDate}}</p>
+                        <p *ngIf="b.volumeInfo.description">Description: {{b.volumeInfo.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wishlist">
+        <h3>Wishlist</h3>
+        <div *ngFor="let b of addedBooks; let i = index" class="added-book-card">
+            <p>{{ b.volumeInfo.title }}</p>
+            <button (click)="onDelete(i)">Delete</button>
+        </div>
+    </div>
+</div>

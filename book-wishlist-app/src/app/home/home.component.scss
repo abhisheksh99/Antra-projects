@@ -1,0 +1,105 @@
+.main-container {
+  display: flex;
+  gap: 10px;      
+  padding: 20px;
+}
+
+.left {
+    flex:1;
+}
+
+label {
+    font-size: 15pt;
+}
+
+input {
+    width: 300px;
+    height: 30px;
+    font-size: 15pt;
+    margin-bottom: 20px;
+}
+
+.books-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px;
+}
+
+.book-card {
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 600px; 
+  width: 100%; 
+  padding: 10px;
+  border: 2px solid #333;
+
+  .card-content {
+    display: flex;
+    gap: 15px;  // space between left and right
+  }
+
+  .card-left {
+    display: flex;
+    flex-direction: column; // title above image
+    align-items: center;
+    min-width: 150px; // optional, keeps left side consistent
+
+    img {
+      max-width: 120px;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 15pt;
+      color: white;
+      margin: 0;
+      text-align: center;
+    }
+  }
+
+  .book-details {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: white;
+
+    p {
+      font-size: 0.85rem;
+      margin: 3px 0;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border: 2px solid white;
+  }
+}
+
+.wishlist {
+  width: 250px;      // fixed sidebar width
+  position: sticky;  // keeps it visible if scrolling
+  top: 20px;         // distance from top
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  height: fit-content;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .added-book-card {
+    background-color: #333;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+}
