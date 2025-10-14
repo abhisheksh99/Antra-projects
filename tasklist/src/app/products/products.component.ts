@@ -1,114 +1,97 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductService } from '../product-service.service';
-import { errorContext } from 'rxjs/internal/util/errorContext';
-import { FormControl, FormGroup } from '@angular/forms';
-import { concatMap, debounceTime, of, Subscription, switchMap } from 'rxjs';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ProductService } from '../product.service';
+import { FormControl } from '@angular/forms';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
-  standalone: false,
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit, OnDestroy{
-  productsList?:any = [];
-  errorMessage:string = "";
-  addingProduct:boolean = false;
+export class ProductsComponent implements OnInit, OnDestroy {
 
-  newTitle:string = '';
-  newDescription:string = '';
-  newCategory:string = '';
+  products: any[] = [];
+  errorMessage = '';
+  userInput = new FormControl<string>('');
+  subs: Subscription[] = [];
 
-  editingIndex: number | null = null;
-  userSearchInput= new FormControl();
+  
+  newProduct = { title: '', description: '', category: '' };
+  editProductId: number | null = null;
+  editData = { title: '', description: '', category: '' };
 
-  subscriptions:Subscription[] = [];
+  constructor(private productService: ProductService) {}
 
-  constructor(private productService: ProductService){
+  ngOnInit(): void {
+   
+    this.fetchProducts();
 
+    
+    this.subs.push(
+      this.productService.products$.subscribe(list => {
+        this.products = list;
+      })
+    );
+
+    
+    this.subs.push(
+      this.userInput.valueChanges.pipe(
+        debounceTime(1000),
+        switchMap(input => this.productService.searchProduct(input || ''))
+      ).subscribe({
+        next: result => {
+          
+          console.log('Search result:', result);
+        },
+        error: err => {
+          console.error('Error in search:', err);
+          this.errorMessage = 'Failed to fetch search results.';
+        }
+      })
+    );
   }
 
-  ngOnInit():void {
-    this.subscriptions.push(this.productService.getProducts().subscribe({
-      next: (data:any) => {
-        console.log('Data:', data)
-        this.productsList = data.products;
-      },
-      error: (err) => {
-        console.error('Error:', err)
-        this.errorMessage = 'Error: '+err.message;
-      },
-      complete: () => console.log('Completed')
-    }));
-    console.log(this.userSearchInput);
-
-    this.subscriptions.push(this.userSearchInput.valueChanges.pipe(
-      debounceTime(500),
-      switchMap((input) => {
-        return this.productService.getSearchedProducts(input);
-        })).subscribe({
-            next: (data:any) => {
-            console.log(data);
-          }
-      }
-    ));
-
-    this.subscriptions.push(this.productService.products.subscribe(res => this.productsList = res));
+  ngOnDestroy(): void {
+    this.subs.forEach(s => s.unsubscribe());
   }
 
-
-  addProduct() {
-    this.addingProduct = true;
+  
+  fetchProducts(): void {
+    this.subs.push(
+      this.productService.getProducts().subscribe({
+        next: (response: any[]) => {
+          
+          console.log('API Response:', response);
+          this.products = response;
+        },
+        error: err => {
+          console.error('Error fetching products:', err);
+          this.errorMessage = 'Failed to load products.';
+        }
+      })
+    );
   }
 
-  onSubmitAddProduct() {
-    if(!this.newTitle || !this.newDescription || !this.newCategory) {
-      alert('You must fill out all fields');
-    }
-
-    const newProduct = {
-      title: this.newTitle,
-      description: this.newDescription,
-      category: this.newCategory
-    }
-
-    this.productsList.push(newProduct);
+ 
+  addProduct(): void {
+    if (!this.newProduct.title.trim()) return;
+    this.productService.addProduct(this.newProduct);
+    this.newProduct = { title: '', description: '', category: '' };
   }
 
-  onCancelAddProduct() {
-    this.addingProduct = false;
+  editProduct(p: any): void {
+    this.editProductId = p.id;
+    this.editData = { title: p.title ?? '', description: p.description ?? '', category: p.category ?? '' };
   }
 
-  onUpdate(productIndex:number) {
-    this.editingIndex = productIndex;
-    console.log(this.editingIndex);
+  saveEdit(): void {
+    if (this.editProductId == null) return;
+    this.productService.updateProduct(this.editProductId, this.editData);
+    this.editProductId = null;
   }
 
-  updateProduct(productIndex:number) {
-    if(!this.newTitle || !this.newDescription || !this.newCategory) {
-      alert('You must fill out all fields');
-    }
-    const product = this.productsList[productIndex];
-    product.title = this.newTitle;
-    product.description = this.newDescription;
-    product.category = this.newCategory;
-
-    this.newTitle = '';
-    this.newDescription = '';
-    this.newCategory = '';
-    this.editingIndex = null;
-  }
-
-  closeEditing() {
-    this.editingIndex = null;
-  }
-
-  onDelete(index:number) {
-    this.productsList.splice(index,1);
-  }
-
-  ngOnDestroy():void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+  deleteProduct(id: number): void {
+    this.productService.deleteProduct(id);
   }
 }

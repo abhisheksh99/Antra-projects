@@ -1,0 +1,16 @@
+
+<div>
+    <p>{{taskDetails.title}}</p>
+    <p>{{taskDetails.description}}</p>
+    <button (click)="edit()">Edit Task</button>
+    <div *ngIf="buttonClicked">
+        <label>Title:</label>
+        <input type="text" [(ngModel)]="newTitle"><br>
+        <label>Description:</label>
+        <input type="text" [(ngModel)]="newDescription">
+        <button (click)="save()">Save</button>
+    
+    </div>
+</div>
+    
+    

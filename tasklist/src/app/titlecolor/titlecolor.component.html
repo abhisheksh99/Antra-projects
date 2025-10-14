@@ -1,0 +1,9 @@
+<h1 [style.color]="selectedColor">Complete Angular Tutorial For Beginners</h1>
+
+<div *ngFor="let sec of sections">
+  <app-sections
+    [sections]="sec"
+    [selectedColor]="selectedColor"
+    (colorSelected)="onColorChange($event)">
+  </app-sections>
+</div>

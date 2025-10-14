@@ -1,0 +1,33 @@
+
+<h1>Task List</h1>
+<label>Filter by Status:</label>
+<select [(ngModel)]="selectedFilterValue">
+  <option value="">All</option>
+  <option value="Incomplete">Incomplete</option>
+  <option value="In Progress">In Progress</option>
+  <option value="Completed">Completed</option>
+</select>
+<label>Search Title</label>
+<input [(ngModel)]="userInput" (keyup)="onSearch()"/>
+<ul>
+  <li *ngFor="let task of (tempTasks.length? tempTasks : tasks) | statusFilter:selectedFilterValue" appHighlight>
+    <app-taskdetail [taskDetails]="task" (editedDetails)="parentGet($event)"> </app-taskdetail>
+  </li>
+</ul>
+
+<p *ngIf="tasks.length === 0">No tasks available.</p>
+
+
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <input formControlName="newTitle" placeholder="Enter new task title" />
+  <div *ngIf="taskForm.get('newTitle')?.touched && taskForm.get('newTitle')?.invalid">
+    * Title is required
+  </div>
+
+  <input formControlName="newDescription" placeholder="Enter new task description" />
+  <div *ngIf="taskForm.get('newDescription')?.touched && taskForm.get('newDescription')?.invalid">
+    * Description is required
+  </div>
+
+  <button type="submit">Add new Task</button>
+</form>

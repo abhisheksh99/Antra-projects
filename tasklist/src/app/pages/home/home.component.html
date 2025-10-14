@@ -1,0 +1,51 @@
+<div class="main-container">
+  
+  <div class="left-section">
+    <input
+      type="text"
+      placeholder="Search Book"
+      [formControl]="searchControl"
+      class="search-input"
+    />
+
+    <div class="booklist" *ngIf="books.length > 0">
+      <div
+        *ngFor="let book of books"
+        class="book-card"
+        (click)="addToWishlist(book)"
+      >
+        <img
+          *ngIf="book.volumeInfo.imageLinks"
+          [src]="book.volumeInfo.imageLinks.thumbnail"
+          alt="Book cover"
+        />
+
+        <div class="book-info">
+          <h3>{{ book.volumeInfo.title }}</h3>
+          <p *ngIf="book.volumeInfo.authors">
+            Author: {{ book.volumeInfo.authors.join(', ') }}
+          </p>
+          <p *ngIf="book.volumeInfo.publisher">
+            Publisher: {{ book.volumeInfo.publisher }}
+          </p>
+          <p *ngIf="book.volumeInfo.publishedDate">
+            Published: {{ book.volumeInfo.publishedDate }}
+          </p>
+          <p *ngIf="book.volumeInfo.description">
+            {{ book.volumeInfo.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <h3>My Reading Wishlist ({{ wishlist.length }})</h3>
+    <ul>
+      <li *ngFor="let book of wishlist">
+        {{ book.title }}
+        <button (click)="remove(book.id)">X</button>
+      </li>
+    </ul>
+  </div>
+</div>

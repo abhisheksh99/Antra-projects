@@ -1,0 +1,14 @@
+<div class="wishlist-container">
+  <h2>My Reading Wishlist</h2>
+
+  <div *ngIf="wishlist.length === 0">
+    <p>No books added yet.</p>
+  </div>
+
+  <ul>
+    <li *ngFor="let book of wishlist">
+      {{ book.title }}
+      
+    </li>
+  </ul>
+</div>

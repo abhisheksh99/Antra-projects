@@ -1,0 +1,22 @@
+<div class="section-box" [class.active]="isSelected(sections.color)">
+  <div class="section-content">
+    <h3><strong>{{ sections.title }}</strong></h3>
+    <p>{{ sections.body }}</p>
+
+    <button
+      [style.backgroundColor]="sections.color"
+      (mouseenter)="hoverColor = sections.color"
+      (mouseleave)="hoverColor = ''"
+      (click)="toggleColor(sections.color)">
+      Set {{ sections.color }}
+    </button>
+  </div>
+
+
+  <div
+    class="right-bar"
+    [style.backgroundColor]="hoverColor || (isSelected(sections.color) ? sections.color : 'transparent')">
+  </div>
+</div>
+
+

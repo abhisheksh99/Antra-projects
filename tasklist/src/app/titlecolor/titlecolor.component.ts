@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 
-@Component({
-  selector: 'app-title',
-  templateUrl: './title.component.html',
-  styleUrl: './title.component.scss'
-})
-export class TitleComponent {
-  mainTitle = 'Angular Core Topics';
-  selectedColor = 'black';
 
-  sections = [
+@Component({
+  selector: 'app-titlecolor',
+  templateUrl: './titlecolor.component.html',
+  styleUrl: './titlecolor.component.scss'
+})
+export class TitlecolorComponent {
+
+  sections =
+  [
     {
       title: 'Directives',
-      body: 'The Angular directive helps us to manipulate the DOM. You can change the appearance, behavior, or layout of a DOM element using the directives. They help you to extend HTML. The Angular directives are classified into three categories based on how they behave. They are Component, Structural and Attribute Directives',
+      body: 'The Angular directive helps us to manipulate the DOM. You can change the appearance, behavior, or layout of a DOM element using the directives. They help you to extend HTML. The Angular directives are classified into three categories based on how they behave.  They are Component, Structural and Attribute Directives',
       color: 'red',
     },
     {
@@ -30,11 +30,12 @@ export class TitleComponent {
       body: 'The newly designed HttpClient Module allows us to query the Remote API source to get data into our Application. It requires us to Subscribe to the returned response using RxJs observables.',
       color: 'orange',
     },
-  ];
+  ]
 
+  selectedColor: string = 'black';
 
-  handleColorChange(color: string) {
-    this.selectedColor = this.selectedColor === color ? 'black' : color;
+  onColorChange(color: string){
+    this.selectedColor = this.selectedColor === color? 'black' : color;
   }
 
 }
